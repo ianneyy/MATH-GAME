@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numeracy Quiz - Difficulty</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <style>
+        @keyframes fadeInOut {
+            0% { opacity: 1; }
+            25% { opacity: 0.2; }
+            50% { opacity: 0.5; }
+            75% { opacity: 0.7; }
+            100% { visibility: visible; }
+        }
+        
+        .bubble {
+            animation: fadeInOut ease-in-out infinite;
+        }
+        
+        .bubble-1 { animation-duration: 7s; animation-delay: 0s; }
+        .bubble-2 { animation-duration: 9s; animation-delay: 1s; }
+        .bubble-3 { animation-duration: 8s; animation-delay: 2s; }
+        .bubble-4 { animation-duration: 10s; animation-delay: 0.5s; }
+        .bubble-5 { animation-duration: 7.5s; animation-delay: 1.5s; }
+        .bubble-6 { animation-duration: 8.5s; animation-delay: 2.5s; }
+    </style>
+</head>
+
+<body class="bg-gray-900 h-screen flex items-center justify-center overflow-hidden relative">
+    <!-- Decorative bubbles -->
+    <div class="bubble-1 bubble absolute top-20 left-10 w-16 h-16 rounded-full bg-green-200 "></div>
+    <div class="bubble-2 bubble absolute bottom-20 left-10 w-24 h-24 rounded-full bg-pink-200 "></div>
+    <div class="bubble-3 bubble absolute top-32 right-20 w-28 h-28 rounded-full bg-pink-200 "></div>
+    <div class="bubble-4 bubble absolute top-10 right-10 w-6 h-6 rounded-full bg-green-200 opacity-70"></div>
+    <div class="bubble-5 bubble absolute bottom-40 right-32 w-20 h-20 rounded-full bg-green-200 opacity-70"></div>
+    <div class="bubble-5 bubble absolute top-64 right-16 w-4 h-4 rounded-full bg-purple-200 opacity-70"></div>
+    <div class="bubble-5 bubble absolute top-74 left-16 w-4 h-4 rounded-full bg-purple-300 opacity-70"></div>
+    <div class="bubble-5 bubble absolute top-52 left-52  w-32 h-32 rounded-full bg-purple-300 opacity-70"></div>
+
+    
+    <!-- Main content -->
+    <div class="max-w-lg w-full px-6 z-10">
+        <!-- Header with back button -->
+        <div class="flex items-center mb-4">
+            <a href="index.html" class="text-white text-3xl mr-4">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            <div>
+                <h1 class="text-6xl font-bold text-white mb-1">Let's Play</h1>
+                <p class="text-lg text-gray-300">Be the first!</p>
+            </div>
+        </div>
+        
+        <!-- Difficulty options -->
+        <div class="mt-10 space-y-6">
+            <!-- Easy option -->
+            <div class="bg-green-200 rounded-2xl p-5 cursor-pointer hover:shadow-lg transition duration-200 hover:bg-green-300">
+                <div class="flex items-center">
+                    <div class="bg-green-300 rounded-lg p-2 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 72 72"><path fill="#fcea2b" stroke="#fcea2b" stroke-miterlimit="10" stroke-width="2" d="M51.989 51.91C63 43 53.76 34.196 53.76 34.196c0-13.088-10.032-17.473-15.272-18.87a10.9 10.9 0 0 0-5.88.053c-15.466 4.529-14.275 18.817-14.275 18.817C10 44 19.44 51.467 19.44 51.467s16.606 14.614 32.549.443"/><path fill="#f1b31c" d="M36.705 38.807s10.475-.515 0 9.27c0-.001-10.474-9.27 0-9.27"/><path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="m31.396 15.596l-4.428-3.321m7.086 2.214l-1.772-3.764m5.314 4.428l.222-5.757"/><circle cx="28.961" cy="32.425" r="3"/><circle cx="44" cy="32" r="3"/><path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M51.989 51.91C63 43 53.76 34.196 53.76 34.196c0-13.088-10.032-17.473-15.272-18.87a10.9 10.9 0 0 0-5.88.053c-15.466 4.529-14.275 18.817-14.275 18.817C10 44 19.44 51.467 19.44 51.467s16.606 14.614 32.549.443"/><path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M36.705 38.807s10.475-.515 0 9.27c0-.001-10.474-9.27 0-9.27"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Easy</h2>
+                        <p class="text-gray-700 text-sm">Simple addition, subtraction, and basic multiplication</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hard option -->
+            <div class="bg-purple-200 rounded-2xl p-5 cursor-pointer hover:shadow-lg transition hover:bg-purple-300 duration-200">
+                <div class="flex items-center">
+                    <div class="bg-purple-300 rounded-lg p-2 mr-4">
+                        <img src="stegosaurus.png" alt="" class=" w-8 ">
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Hard</h2>
+                        <p class="text-gray-700 text-sm">Trickier problems with multiplication, division, and basic fractions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
