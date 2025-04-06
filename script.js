@@ -71,9 +71,16 @@ function loadQuestion() {
     let question = questionData[currentQuestion];
     document.getElementById('question-text').innerText = question.question;
     let options = shuffleArray([...question.answers]);
-    let optionsHTML = options.map((opt, index) => ` 
-        <button onclick="checkAnswer(${index})" class="bg-green-300 p-3 rounded-2xl">${opt}</button>
-    `).join('');
+    let optionsHTML = options
+      .map(
+        (opt, index) => ` 
+        <button onclick="checkAnswer(${index})" class="opt-btn full-rounded relative w-full ">
+         <span>${opt}</span>
+          <div class="border full-border-rounded absolute inset-0"></div>
+        </button>
+    `
+      )
+      .join("");
     document.getElementById('options').innerHTML = optionsHTML;
     document.getElementById('question-image').src = question.image;  // Set the image dynamically
 }
@@ -97,22 +104,29 @@ function checkAnswer(selected) {
     }
 }
 function viewOverview(){
+
+
     document.getElementById("overview").classList.remove('hidden');
     document.getElementById("results").classList.add('hidden');
     displayAnswers();
 
 }
+
 function endQuiz() {
+    
     clearInterval(timerInterval);  // Clear the existing timer
     document.getElementById("quiz").classList.add('hidden');
     document.getElementById("results").classList.remove('hidden');
+
     // showConfetti();
     document.getElementById("score").innerText = `${score}/10`;
     document.getElementById("score2").innerText = `${score}/10`;
+    
 
     // displayAnswers(); // Call the function to display correct and incorrect answers
     saveScore();
 
+    displayResult();
     const end = Date.now() + 15 * 500;
 
 // go Buckeyes!
@@ -354,6 +368,22 @@ function viewLeaderboard() {
     document.getElementById('hard-leaderboard').innerHTML = hardHTML;
     document.getElementById("results").classList.add('hidden');
     document.getElementById("leaderboard").classList.remove('hidden');
+}
+function displayResult(){
+  let recent = JSON.parse(localStorage.getItem("recentScore"));
+  const namePlaceholder = document.getElementById("name-placeholder");
+  
+
+  namePlaceholder.innerHTML = `
+     <div 
+      class="w-24 h-24 rounded-full text-white flex overflow-hidden mx-auto"
+      style="background-color: #e1b3de"
+      >
+      <img src="Assets/boy.png" alt="" class="object-cover" />
+      </div>
+      <div class="text-center text-gray-200">${recent.username}</div>
+  `;
+
 }
 function displayRecentScore() {
   let recent = JSON.parse(localStorage.getItem("recentScore"));
