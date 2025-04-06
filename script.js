@@ -65,7 +65,7 @@ function startQuiz(level) {
     loadQuestion();
     startTimer();  // Start the timer with the dynamic time limit
 }
-
+//load questions
 function loadQuestion() {
     let questionData = (difficulty === "easy") ? questionsEasy : questionsHard;
     let question = questionData[currentQuestion];
