@@ -106,3 +106,16 @@ body {
             0%, 100% { filter: drop-shadow(0 0 5px gold); }
             50% { filter: drop-shadow(0 0 20px gold); }
         }
+::-webkit-scrollbar {
+  width: 5px; /* For vertical scrollbar */
+ 
+}
+::-webkit-scrollbar-thumb {
+  background-color: #16ff41a9;
+  border-radius: 10px;
+}
+
+/* Scrollbar track background */
+::-webkit-scrollbar-track {
+  background: #c1ebc8;
+}

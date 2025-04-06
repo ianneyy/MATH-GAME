@@ -96,17 +96,24 @@ function checkAnswer(selected) {
         endQuiz();
     }
 }
+function viewOverview(){
+    document.getElementById("overview").classList.remove('hidden');
+    document.getElementById("results").classList.add('hidden');
+    displayAnswers();
 
+}
 function endQuiz() {
     clearInterval(timerInterval);  // Clear the existing timer
     document.getElementById("quiz").classList.add('hidden');
     document.getElementById("results").classList.remove('hidden');
     // showConfetti();
     document.getElementById("score").innerText = `${score}/10`;
+    document.getElementById("score2").innerText = `${score}/10`;
+
     // displayAnswers(); // Call the function to display correct and incorrect answers
     saveScore();
 
-    const end = Date.now() + 15 * 3000;
+    const end = Date.now() + 15 * 500;
 
 // go Buckeyes!
 const colors = ["#bb0000", "#ffffff"];
@@ -174,45 +181,257 @@ fire(0.1, {
 });
 }
 
-// function displayAnswers() {
-//     let questionData = (difficulty === "easy") ? questionsEasy : questionsHard;
-//     let resultsHTML = "";
+function displayAnswers() {
+    let questionData = (difficulty === "easy") ? questionsEasy : questionsHard;
+    let resultsHTML = "";
 
-//     questionData.forEach((question, index) => {
-//         const userAnswer = question.answers[userAnswers[index]];
-//         const correctAnswer = question.answers[question.correct];
-//         const isCorrect = userAnswers[index] === question.correct;
+    questionData.forEach((question, index) => {
+        const userAnswer = question.answers[userAnswers[index]];
+        const correctAnswer = question.answers[question.correct];
+        const isCorrect = userAnswers[index] === question.correct;
 
-//         resultsHTML += `
-//             <li class="p-4 border rounded-lg shadow-md bg-gray-100">
-//                 <p class="font-medium">Q${index + 1}: ${question.question}</p>
-//                 <p class="text-gray-600">Your Answer: <span class="font-bold ${isCorrect ? 'text-green-500' : 'text-red-500'}">${userAnswer}</span></p>
-//                 <p class="text-gray-600">Correct Answer: <span class="font-bold text-green-500">${correctAnswer}</span></p>
-//             </li>
-//         `;
-//     });
+        let userAnswerHTML = "";
+         if (isCorrect) {
+            userAnswerHTML = `
+                <div class="text-gray-300 p-2 rounded-xl flex items-center w-52">
+                    <span class="text-sm">Your answer: <span>${userAnswer}</span></span>
+                </div>
+            `;
+        } else {
+            userAnswerHTML = `
+                <div class="bg-red-300 p-2 rounded-xl text-left w-52">
+                    <i class="ri-close-circle-fill text-red-600"></i>
+                    <span class="text-sm">Your answer: <span>${userAnswer}</span></span>
+                </div>
+            `;
+        }
+        resultsHTML += `
+                <div class="bg-gray-600 rounded-xl px-8 py-4 mt-2">
+                <span class="text-gray-200">${question.question}</span>
+                <div class="flex justify-between mt-2">
+                    <div class="bg-green-200 text-black p-2 rounded-xl flex items-center correct-answer w-52">
+                        <i class="ri-checkbox-circle-fill text-green-600 mr-2"></i>
+                            <span>${correctAnswer}</span>
+                    </div>
+                    ${userAnswerHTML}
+                </div>
+                 </div>
+        `;
+    });
 
-//     document.getElementById("user-answers").innerHTML = resultsHTML; // Populate the answers
-// }
+    document.getElementById("user-answers").innerHTML = resultsHTML; // Populate the answers
+}
 function saveScore() {
     let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
-    leaderboard.push({ username, score, difficulty });
+    
+    leaderboard.push({username, score, difficulty });
     leaderboard.sort((a, b) => b.score - a.score);
     leaderboard = leaderboard.slice(0, 5);
+
+    leaderboard = leaderboard.map((entry, index) => ({
+      id: index + 1,
+      ...entry,
+    }));
     localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+
+    let recentScore = {
+      username,
+      score,
+      difficulty
+    };
+    localStorage.setItem("recentScore", JSON.stringify(recentScore));
 }
 
 function viewLeaderboard() {
     let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
     let easyLeaderboard = leaderboard.filter(entry => entry.difficulty === 'easy');
     let hardLeaderboard = leaderboard.filter(entry => entry.difficulty === 'hard');
-    let easyHTML = easyLeaderboard.map(entry => `<li class="text-lg">${entry.username} - ${entry.score}</li>`).join('');
-    let hardHTML = hardLeaderboard.map(entry => `<li class="text-lg">${entry.username} - ${entry.score}</li>`).join('');
+    let hardHTML = hardLeaderboard
+      .map((entry, index) => {
+        let medalImg = "";
+        let crownImg = "";
+        if (index === 0) {
+          medalImg = "medal/goldMedal.png";
+          crownImg = "Assets/boywcrown.png";
+        } else if (index === 1) {
+          medalImg = "medal/silverMedal.png";
+          
+        } else if (index === 2) {
+          medalImg = "medal/bronzeMedal.png";
+        }
+
+        return `
+        
+        <div class="flex justify-between mb-7">
+        <div class="flex">
+                <div
+                  class="w-8 h-8 rounded-full bg-green-500 text-white flex overflow-hidden"
+                  style="background-color: #e1b3de"
+                >
+                  ${
+                    crownImg
+                      ? `<img src="${crownImg}" class="object-cover"/>`
+                      : `<img src="Assets/boy.png" class="object-cover"/>`
+                  }
+                
+                </div>
+                <div class="mx-3 text-left">
+                  <p class="ml-3">${entry.username}</p>
+                  <div
+                    class="px-3 rounded-full"
+                    style="background-color: #00ff4d"
+                  >
+                    <p class="text-xs">1080 pts</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex gap-2">
+                <div class="flex items-center text-center">
+                  <p class="text-xs">35s</p>
+                </div>
+                <div class="relative flex items-center justify-center">
+            ${
+              medalImg
+                ? `<img src="${medalImg}" class="h-6 w-6" alt="Medal" />`
+                : ""
+            }
+          </div>
+              </div>
+             </div>
+        `;
+      })
+      .join("");
+    let easyHTML = easyLeaderboard
+      .map(
+        (entry, index) =>{
+          let medalImg = "";
+          if (index === 0) {
+            medalImg = "medal/goldMedal.png";
+          } else if (index === 1) {
+            medalImg = "medal/silverMedal.png";
+          } else if (index === 2) {
+            medalImg = "medal/bronzeMedal.png";
+          }
+
+          return `
+        
+        <div class="flex justify-between mb-7">
+        <div class="flex">
+                <div
+                  class="w-8 h-8 rounded-full bg-green-500 text-white flex overflow-hidden"
+                  style="background-color: #e1b3de"
+                >
+                  <img src="Assets/boywcrown.png" alt="" class="object-cover" />
+                </div>
+                <div class="mx-3 text-left">
+                  <p class="ml-3">${entry.username}</p>
+                  <div
+                    class="px-3 rounded-full"
+                    style="background-color: #00ff4d"
+                  >
+                    <p class="text-xs">1080 pts</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex gap-2">
+                <div class="flex items-center text-center">
+                  <p class="text-xs">35s</p>
+                </div>
+                <div class="relative flex items-center justify-center">
+            ${medalImg? `<img src="${medalImg}" class="h-6 w-6" alt="Medal" />`: ""}
+          </div>
+              </div>
+             </div>
+        `;
+        })
+      .join("");
+
+  
+    // let hardHTML = hardLeaderboard.map(entry => `<li class="text-lg">${entry.username} - ${entry.score}</li>`).join('');
     document.getElementById('easy-leaderboard').innerHTML = easyHTML;
     document.getElementById('hard-leaderboard').innerHTML = hardHTML;
     document.getElementById("results").classList.add('hidden');
     document.getElementById("leaderboard").classList.remove('hidden');
 }
+function displayRecentScore() {
+  let recent = JSON.parse(localStorage.getItem("recentScore"));
+  const leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+
+  if (!recent) return;
+
+  // Find the rank of the recent user
+  const userIndex = leaderboard.findIndex(
+    (entry) =>
+      entry.username === recent.username &&
+      entry.score === recent.score &&
+      entry.difficulty === recent.difficulty
+  );
+  const rank = userIndex >= 0 ? userIndex + 1 : null;
+
+  // Select DOM elements inside your #recent container
+  const recentContainer = document.getElementById("recent");
+  if (!recentContainer) return;
+
+  // Replace contents
+  recentContainer.innerHTML = `
+    <div class="mx-auto">
+      <div
+        class="w-24 h-24 rounded-full text-white flex overflow-hidden mx-auto"
+        style="background-color: #e1b3de"
+      >
+        <img src="Assets/girl.png" alt="" class="object-cover" />
+      </div>
+      <div class="text-center text-gray-900">${recent.username}</div>
+    </div>
+    <div class="text-center flex flex-col mt-5">
+      <div class="flex text-center mx-auto items-center">
+        ${
+          rank === 1
+            ? '<img src="medal/goldMedal.png" alt="" class="h-10 w-10" />'
+            : rank === 2
+            ? '<img src="medal/silverMedal.png" alt="" class="h-10 w-10" />'
+            : rank === 3
+            ? '<img src="medal/bronzeMedal.png" alt="" class="h-10 w-10" />'
+            : ""
+        }
+        <span class="text-6xl font-semibold text-yellow-400 font-sans">
+          ${rank ? `${rank}${getOrdinalSuffix(rank)}` : "N/A"}
+        </span>
+      </div>
+      <span class="text-gray-700">Your Rank</span>
+    </div>
+    <div class="flex flex-col mt-10 gap-4">
+      <div class="flex justify-between">
+        <span>Total Points:</span>
+        <span class="bg-green-300 px-4 rounded-full">${recent.score}pts</span>
+      </div>
+      <div class="flex justify-between">
+        <span>Total Score:</span>
+        <span class="px-4">${recent.correct || "N/A"}</span>
+      </div>
+      <div class="flex justify-between">
+        <span>Total Spent:</span>
+        <span class="px-4">${recent.time || "N/A"}</span>
+      </div>
+    </div>
+  `;
+}
+
+// Helper to get ordinal suffix (e.g. 1st, 2nd, 3rd)
+function getOrdinalSuffix(i) {
+  const j = i % 10,
+    k = i % 100;
+  if (j == 1 && k != 11) return "st";
+  if (j == 2 && k != 12) return "nd";
+  if (j == 3 && k != 13) return "rd";
+  return "th";
+}
+
+// Call this when your page loads or after saving the score
+
+
 
 function goBackToResults() {
     document.getElementById("leaderboard").classList.add('hidden');
@@ -263,6 +482,10 @@ function exitGame() {
     gamePaused = false;
 }
 
+function returnResult(){
+    document.getElementById("overview").classList.add('hidden');
+    document.getElementById("results").classList.remove('hidden');
+}
 function startTimer() {
     timerInterval = setInterval(() => {
         timeLeft--;
