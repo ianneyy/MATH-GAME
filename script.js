@@ -320,8 +320,12 @@ function viewLeaderboard() {
       .map(
         (entry, index) =>{
           let medalImg = "";
+        let crownImg = "";
+
           if (index === 0) {
             medalImg = "medal/goldMedal.png";
+          crownImg = "Assets/boywcrown.png";
+
           } else if (index === 1) {
             medalImg = "medal/silverMedal.png";
           } else if (index === 2) {
@@ -336,7 +340,11 @@ function viewLeaderboard() {
                   class="w-8 h-8 rounded-full bg-green-500 text-white flex overflow-hidden"
                   style="background-color: #e1b3de"
                 >
-                  <img src="Assets/boywcrown.png" alt="" class="object-cover" />
+                   ${
+                     crownImg
+                       ? `<img src="${crownImg}" class="object-cover"/>`
+                       : `<img src="Assets/boy.png" class="object-cover"/>`
+                   }
                 </div>
                 <div class="mx-3 text-left">
                   <p class="ml-3">${entry.username}</p>
@@ -354,7 +362,11 @@ function viewLeaderboard() {
                   <p class="text-xs">35s</p>
                 </div>
                 <div class="relative flex items-center justify-center">
-            ${medalImg? `<img src="${medalImg}" class="h-6 w-6" alt="Medal" />`: ""}
+            ${
+              medalImg
+                ? `<img src="${medalImg}" class="h-6 w-6" alt="Medal" />`
+                : ""
+            }
           </div>
               </div>
              </div>
@@ -368,6 +380,7 @@ function viewLeaderboard() {
     document.getElementById('hard-leaderboard').innerHTML = hardHTML;
     document.getElementById("results").classList.add('hidden');
     document.getElementById("leaderboard").classList.remove('hidden');
+    displayRecentScore();
 }
 function displayResult(){
   let recent = JSON.parse(localStorage.getItem("recentScore"));
@@ -411,7 +424,7 @@ function displayRecentScore() {
         class="w-24 h-24 rounded-full text-white flex overflow-hidden mx-auto"
         style="background-color: #e1b3de"
       >
-        <img src="Assets/girl.png" alt="" class="object-cover" />
+        <img src="Assets/boy.png" alt="" class="object-cover" />
       </div>
       <div class="text-center text-gray-900">${recent.username}</div>
     </div>
