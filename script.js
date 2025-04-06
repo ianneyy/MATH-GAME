@@ -84,7 +84,7 @@ function loadQuestion() {
     document.getElementById('options').innerHTML = optionsHTML;
     document.getElementById('question-image').src = question.image;  // Set the image dynamically
 }
-
+//check answer
 function checkAnswer(selected) {
     let questionData = (difficulty === "easy") ? questionsEasy : questionsHard;
     let correctIndex = questionData[currentQuestion].correct;
